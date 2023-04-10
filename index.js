@@ -1,8 +1,10 @@
 const qrcode = require('qrcode-terminal');
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const fs = require('fs');
+const google = require('google-it');
 
 const client = new Client({
+    puppeteer: { headless: true, args: ['--no-sandbox'] },
     authStrategy: new LocalAuth()
 });
 
@@ -17,6 +19,19 @@ client.on('message', async message => {
         const chat = jsonData.filter((data) => data.date === message.body.split(',')[1]);
         const chatMessages = chat.map((data) => `${data.date} - ${data.from}: ${data.body}`).join('\n');
         message.reply(chatMessages);
+    } else if (message.body.split(',')[0] === '/search') {
+        google({ query: `${message.body.split(',')[1]}` })
+            .then((results) => {
+                let chatMessages = '';
+                results.forEach((result) => {
+                    chatMessages += `Title: ${result.title}\n`;
+                    chatMessages += `Link: ${result.link}\n\n`;
+                });
+                message.reply(chatMessages);
+            })
+            .catch((err) => {
+                message.reply('gagal searching');
+            });
     } else {
         const { timestamp, body, from, deviceType } = message;
         const today = new Date(timestamp * 1000);
