@@ -4,6 +4,7 @@ const fs = require('fs');
 const google = require('google-it');
 const { createAudioFile } = require('simple-tts-mp3');
 
+const sample = 123;
 const client = new Client({
     puppeteer: { headless: true, args: ['--no-sandbox'] },
     authStrategy: new LocalAuth()
