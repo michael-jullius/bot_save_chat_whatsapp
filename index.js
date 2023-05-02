@@ -1,7 +1,8 @@
 const qrcode = require('qrcode-terminal');
-const { Client, LocalAuth } = require('whatsapp-web.js');
+const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const fs = require('fs');
 const google = require('google-it');
+const { createAudioFile } = require('simple-tts-mp3');
 
 const client = new Client({
     puppeteer: { headless: true, args: ['--no-sandbox'] },
@@ -32,10 +33,17 @@ client.on('message', async message => {
             .catch((err) => {
                 message.reply('gagal searching');
             });
+    } else if (message.body.split('|')[0] === '/create_audio') {
+        await createAudioFile(`${message.body.split('|')[1]}`, 'output', 'id');
+        message.reply('waiting create audio....');
+        setTimeout(() => {
+            const media = MessageMedia.fromFilePath('./output.mp3');
+            message.reply(media);
+        }, 2000);
     } else {
         const { timestamp, body, from, deviceType } = message;
         const today = new Date(timestamp * 1000);
-        const date = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}:${today.getHours()}:${today.getMinutes()}`;
+        const date = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}:${today.getHours() + 7}:${today.getMinutes()}`;
         const chat = {
             date,
             from,
