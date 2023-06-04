@@ -2,6 +2,7 @@ const qrcode = require('qrcode-terminal');
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const fs = require('fs');
 const google = require('google-it');
+const gpt = require('@nechlophomeriaa/free-chatgpt');
 const { createAudioFile } = require('simple-tts-mp3');
 
 const client = new Client({
@@ -40,6 +41,12 @@ client.on('message', async message => {
             const media = MessageMedia.fromFilePath('./output.mp3');
             message.reply(media);
         }, 2000);
+    } else if (message.body.split(',')[0] === '/ai') {
+        gpt(message.body.split(',')[1]).then((res) => {
+            message.reply(res);
+        });
+    } else if (message.body === 'ping') {
+        message.reply('running');
     } else {
         const { timestamp, body, from, deviceType } = message;
         const today = new Date(timestamp * 1000);

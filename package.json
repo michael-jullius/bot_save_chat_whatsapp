@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@nechlophomeriaa/free-chatgpt": "^1.0.5",
     "google-it": "^1.6.4",
     "qrcode-terminal": "^0.12.0",
     "simple-tts-mp3": "^1.0.4",

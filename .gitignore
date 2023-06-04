@@ -3,3 +3,5 @@ node_modules
 package-lock.json
 output.mp3
 test.js
+data.json
+.wwebjs_cache
