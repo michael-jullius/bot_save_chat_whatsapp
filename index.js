@@ -64,7 +64,7 @@ client.on('message', async message => {
 });
 
 client.on('ready', () => {
-    client.sendMessage('62895600904600@c.us', 'bot running');
+    client.sendMessage("62895600904600@c.us", "bot running");
     console.log('Client is ready!');
 });
 
